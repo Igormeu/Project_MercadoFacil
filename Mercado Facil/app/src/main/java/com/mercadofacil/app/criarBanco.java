@@ -32,10 +32,22 @@ public class CriarBanco extends SQLiteOpenHelper {
                 "quantidadePorUnidade DOUBLE, " +
                 "unidadeMedida INTERGER" +
                 ");";
+        
+        // Tabela 3: listaPreco
+        String sqlListaPrecos = "CREATE TABLE IF NOT EXISTS ListaPrecos (" +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "idEndereco INTEGER, " +
+                "idProduto INTEGER, " +
+                "precoVenda REAL, " +
+                "dataAtualizacao TEXT, " +
+                "FOREIGN KEY (idEndereco) REFERENCES Enderecos(_id), " +
+                "FOREIGN KEY (idProduto) REFERENCES Produtos(_id)" +
+                ");";
 
         // Executa as duas criações
         db.execSQL(sqlEnderecos);
         db.execSQL(sqlProdutos);
+        db.execSQL(sqlListaPrecos);
     }
 
     @Override
