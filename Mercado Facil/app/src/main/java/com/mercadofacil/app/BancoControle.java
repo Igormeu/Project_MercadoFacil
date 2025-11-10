@@ -7,6 +7,8 @@ public class BancoControle {
         banco = new CriaBanco(context);
     }
 
+    //Inserri endereco
+
     public String insereEndereco(String nomeEstab, String rede, String rua,
                                  String cidade, String bairro, String estado, String cep) {
         ContentValues valores = new ContentValues();
@@ -29,9 +31,8 @@ public class BancoControle {
             return "✅ Endereço inserido com sucesso";
     }
 
-    // ==============================
-    // 2️⃣ Inserir Produto
-    // ==============================
+    // Inserir Produto
+
     public String insereProduto(String nome, double quantidadePorUnidade, int unidadeMedida) {
         ContentValues valores = new ContentValues();
         db = banco.getWritableDatabase();
@@ -49,9 +50,9 @@ public class BancoControle {
             return "✅ Produto inserido com sucesso";
     }
 
-    // ==============================
-    // 3️⃣ Inserir Lista de Preços
-    // ==============================
+
+    // Inserir Lista de Preços
+
     public String insereListaPreco(int idEndereco, int idProduto, double precoVenda, String dataAtualizacao) {
         ContentValues valores = new ContentValues();
         db = banco.getWritableDatabase();
@@ -69,4 +70,35 @@ public class BancoControle {
         else
             return "✅ Lista de preço inserida com sucesso";
     }
+
+    public Cursor carregaDados(String tabelaSelecionada) {
+    Cursor cursor;
+    String[] campos;
+    db = banco.getReadableDatabase();
+
+    // Definir quais campos carregar de acordo com a tabela escolhida
+    switch (tabelaSelecionada) {
+        case "Enderecos":
+            campos = new String[] {"_id", "nomeEstab", "rede", "rua", "cidade", "bairro", "estado", "cep"};
+            break;
+        case "Produtos":
+            campos = new String[] {"_id", "nome", "precoPadrao", "categoria"};
+            break;
+        case "ListaDePrecos":
+            campos = new String[] {"_id", "idEndereco", "idProduto", "precoVenda", "dataAtualizacao"};
+            break;
+        default:
+            throw new IllegalArgumentException("Tabela inválida: " + tabelaSelecionada);
+    }
+
+    // Carregar dados da tabela selecionada
+    cursor = db.query(tabelaSelecionada, campos, null, null, null, null, null);
+
+    if (cursor != null) {
+        cursor.moveToFirst();  // Move para o primeiro item, caso haja dados
+    }
+    db.close();
+    return cursor;
+    }
+
 }
