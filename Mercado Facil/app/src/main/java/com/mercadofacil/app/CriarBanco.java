@@ -39,7 +39,7 @@ public class CriarBanco extends SQLiteOpenHelper {
                 "idEndereco INTEGER, " +
                 "idProduto INTEGER, " +
                 "precoVenda REAL, " +
-                "dataAtualizacao TEXT, " +
+                "dataAtualizacao DATETIME, " +
                 "FOREIGN KEY (idEndereco) REFERENCES Enderecos(_id), " +
                 "FOREIGN KEY (idProduto) REFERENCES Produtos(_id)" +
                 ");";
@@ -55,6 +55,7 @@ public class CriarBanco extends SQLiteOpenHelper {
         // Caso precise atualizar a estrutura do banco:
         db.execSQL("DROP TABLE IF EXISTS Enderecos");
         db.execSQL("DROP TABLE IF EXISTS Produtos");
+        db.execSQL("DROP TABLE IF EXISTS ListaPrecos");
         onCreate(db);
     }
 }
