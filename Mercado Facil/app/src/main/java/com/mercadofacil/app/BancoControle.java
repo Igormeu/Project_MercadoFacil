@@ -71,6 +71,23 @@ public class BancoControle {
             return "✅ Lista de preço inserida com sucesso";
     }
 
+    public String insereUsuario(String login, String senha) {
+    ContentValues valores = new ContentValues();
+    db = banco.getWritableDatabase();
+
+    valores.put("login", login);
+    valores.put("senha", senha);
+
+    long resultado = db.insert("Usuarios", null, valores);
+    db.close();
+
+    if (resultado == -1)
+        return "❌ Erro ao inserir usuário";
+    else
+        return "✅ Usuário inserido com sucesso";
+    }
+
+
     public Cursor carregaDados(String tabelaSelecionada) {
     Cursor cursor;
     String[] campos;
@@ -86,6 +103,9 @@ public class BancoControle {
             break;
         case "ListaDePrecos":
             campos = new String[] {"_id", "idEndereco", "idProduto", "precoVenda", "dataAtualizacao"};
+            break;
+        case "sqlUsuarios":
+            campos = new String[] {"_id", "login", "senha"};
             break;
         default:
             throw new IllegalArgumentException("Tabela inválida: " + tabelaSelecionada);

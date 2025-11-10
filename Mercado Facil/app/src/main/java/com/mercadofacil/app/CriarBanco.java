@@ -43,11 +43,18 @@ public class CriarBanco extends SQLiteOpenHelper {
                 "FOREIGN KEY (idEndereco) REFERENCES Enderecos(_id), " +
                 "FOREIGN KEY (idProduto) REFERENCES Produtos(_id)" +
                 ");";
+        
+        String sqlUsuarios = "CREATE TABLE IF NOT EXISTS Usuarios (" +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "login TEXT, " +
+                "senha TEXT"  +
+                ");";
 
         // Executa as duas criações
         db.execSQL(sqlEnderecos);
         db.execSQL(sqlProdutos);
         db.execSQL(sqlListaPrecos);
+        db.execSQL(sqlUsuarios);
     }
 
     @Override
