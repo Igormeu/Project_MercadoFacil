@@ -1,29 +1,61 @@
+package com.mercadofacil.app;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.util.Log;
+
 public class BancoControle {
 
     private SQLiteDatabase db;
     private CriarBanco banco;
 
     public BancoControle(Context context){
-        banco = new CriaBanco(context);
+        banco = new CriarBanco(context);
     }
 
-    //Inserri endereco
+    // --- MÉTODOS DE CONTROLE DO BANCO ---
+    // A Activity deve chamar este método (ex: no onResume())
+    public void abrirBanco() throws SQLiteException {
+        // Abre o banco de dados para escrita
+        db = banco.getWritableDatabase();
+    }
 
+    // A Activity deve chamar este método (ex: no onPause() ou onDestroy())
+    public void fecharBanco() {
+        if (db != null && db.isOpen()) {
+            db.close();
+        }
+    }
+
+    // --- MÉTODOS DE INSERÇÃO ---
+
+    /**
+     * Insere um novo endereço.
+     * * ATENÇÃO: Este método agora assume que 'abrirBanco()' já foi chamado.
+     */
     public String insereEndereco(String nomeEstab, String rede, String rua,
                                  String cidade, String bairro, String estado, String cep) {
         ContentValues valores = new ContentValues();
-        db = banco.getWritableDatabase();
+        long resultado = -1;
 
-        valores.put("nomeEstab", nomeEstab);
-        valores.put("rede", rede);
-        valores.put("rua", rua);
-        valores.put("cidade", cidade);
-        valores.put("bairro", bairro);
-        valores.put("estado", estado);
-        valores.put("cep", cep);
+        try {
+            valores.put("nomeEstab", nomeEstab);
+            valores.put("rede", rede);
+            valores.put("rua", rua);
+            valores.put("cidade", cidade);
+            valores.put("bairro", bairro);
+            valores.put("estado", estado);
+            valores.put("cep", cep);
 
-        long resultado = db.insert("Enderecos", null, valores);
-        db.close();
+            resultado = db.insert("Enderecos", null, valores);
+
+        } catch (Exception e) {
+            Log.e("BancoControle", "Erro ao inserir endereço", e);
+        }
+        // REMOVIDO: db.close(); (Isto estava causando o erro crítico)
 
         if (resultado == -1)
             return "❌ Erro ao inserir endereço";
@@ -31,18 +63,26 @@ public class BancoControle {
             return "✅ Endereço inserido com sucesso";
     }
 
-    // Inserir Produto
-
-    public String insereProduto(String nome, double quantidadePorUnidade, int unidadeMedida) {
+    /**
+     * Insere um novo produto.
+     * (Seguindo seu código, com a coluna 'categoria')
+     */
+    public String insereProduto(String nome, double quantidadePorUnidade, int unidadeMedida, String categoria) {
         ContentValues valores = new ContentValues();
-        db = banco.getWritableDatabase();
+        long resultado = -1;
 
-        valores.put("nome", nome);
-        valores.put("quantidadePorUnidade", quantidadePorUnidade);
-        valores.put("unidadeMedida", unidadeMedida);
+        try {
+            valores.put("nome", nome);
+            valores.put("quantidadePorUnidade", quantidadePorUnidade);
+            valores.put("unidadeMedida", unidadeMedida);
+            valores.put("categoria", categoria);
 
-        long resultado = db.insert("Produtos", null, valores);
-        db.close();
+            resultado = db.insert("Produtos", null, valores);
+
+        } catch (Exception e) {
+            Log.e("BancoControle", "Erro ao inserir produto", e);
+        }
+        // REMOVIDO: db.close();
 
         if (resultado == -1)
             return "❌ Erro ao inserir produto";
@@ -51,19 +91,25 @@ public class BancoControle {
     }
 
 
-    // Inserir Lista de Preços
-
+    /**
+     * Insere uma nova lista de preços.
+     */
     public String insereListaPreco(int idEndereco, int idProduto, double precoVenda, String dataAtualizacao) {
         ContentValues valores = new ContentValues();
-        db = banco.getWritableDatabase();
+        long resultado = -1;
 
-        valores.put("idEndereco", idEndereco);
-        valores.put("idProduto", idProduto);
-        valores.put("precoVenda", precoVenda);
-        valores.put("dataAtualizacao", dataAtualizacao);
+        try {
+            valores.put("idEndereco", idEndereco);
+            valores.put("idProduto", idProduto);
+            valores.put("precoVenda", precoVenda);
+            valores.put("dataAtualizacao", dataAtualizacao);
 
-        long resultado = db.insert("ListaDePrecos", null, valores);
-        db.close();
+            resultado = db.insert("ListaPrecos", null, valores);
+
+        } catch (Exception e) {
+            Log.e("BancoControle", "Erro ao inserir lista de preço", e);
+        }
+        // REMOVIDO: db.close();
 
         if (resultado == -1)
             return "❌ Erro ao inserir lista de preço";
@@ -71,54 +117,77 @@ public class BancoControle {
             return "✅ Lista de preço inserida com sucesso";
     }
 
+    /**
+     * Insere um novo usuário.
+     * 🚨 ALERTA DE SEGURANÇA: Salvando senha em texto puro!
+     */
     public String insereUsuario(String login, String senha) {
-    ContentValues valores = new ContentValues();
-    db = banco.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        long resultado = -1;
 
-    valores.put("login", login);
-    valores.put("senha", senha);
+        try {
+            valores.put("login", login);
+            valores.put("senha", senha); // ⚠️ INSEGURO!
 
-    long resultado = db.insert("Usuarios", null, valores);
-    db.close();
+            resultado = db.insert("Usuarios", null, valores);
 
-    if (resultado == -1)
-        return "❌ Erro ao inserir usuário";
-    else
-        return "✅ Usuário inserido com sucesso";
+        } catch (Exception e) {
+            Log.e("BancoControle", "Erro ao inserir usuário", e);
+        }
+        // REMOVIDO: db.close();
+
+        if (resultado == -1)
+            return "❌ Erro ao inserir usuário";
+        else
+            return "✅ Usuário inserido com sucesso";
     }
 
+    // --- MÉTODO DE CONSULTA ---
 
+    /**
+     * Carrega dados de uma tabela.
+     * Assume que 'abrirBanco()' já foi chamado (ou o banco será aberto para leitura).
+     * O Cursor retornado DEVE ser fechado pela Activity.
+     */
     public Cursor carregaDados(String tabelaSelecionada) {
-    Cursor cursor;
-    String[] campos;
-    db = banco.getReadableDatabase();
+        Cursor cursor;
+        String[] campos;
 
-    // Definir quais campos carregar de acordo com a tabela escolhida
-    switch (tabelaSelecionada) {
-        case "Enderecos":
-            campos = new String[] {"_id", "nomeEstab", "rede", "rua", "cidade", "bairro", "estado", "cep"};
-            break;
-        case "Produtos":
-            campos = new String[] {"_id", "nome", "precoPadrao", "categoria"};
-            break;
-        case "ListaDePrecos":
-            campos = new String[] {"_id", "idEndereco", "idProduto", "precoVenda", "dataAtualizacao"};
-            break;
-        case "sqlUsuarios":
-            campos = new String[] {"_id", "login", "senha"};
-            break;
-        default:
-            throw new IllegalArgumentException("Tabela inválida: " + tabelaSelecionada);
+        // Garante que o banco está aberto (para leitura)
+        if (db == null || !db.isOpen()) {
+            db = banco.getReadableDatabase();
+        }
+
+        // Definir quais campos carregar (seguindo seu código mais recente)
+        switch (tabelaSelecionada) {
+            case "Enderecos":
+                campos = new String[] {"_id", "nomeEstab", "rede", "rua", "cidade", "bairro", "estado", "cep"};
+                break;
+            case "Produtos":
+                // Corrigido para incluir 'categoria' e 'unidadeMedida'
+                campos = new String[] {"_id", "nome", "quantidadePorUnidade", "unidadeMedida", "categoria"};
+                break;
+            case "ListaPrecos":
+                campos = new String[] {"_id", "idEndereco", "idProduto", "precoVenda", "dataAtualizacao"};
+                break;
+            case "Usuarios":
+                // Corrigido para incluir 'senha' (como no seu código)
+                campos = new String[] {"_id", "login", "senha"};
+                break;
+            default:
+                throw new IllegalArgumentException("Tabela inválida: " + tabelaSelecionada);
+        }
+
+        // Carregar dados da tabela selecionada
+        cursor = db.query(tabelaSelecionada, campos, null, null, null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        // NÃO FECHAMOS O BANCO AQUI!
+        // O Cursor precisa dele aberto.
+
+        return cursor;
     }
-
-    // Carregar dados da tabela selecionada
-    cursor = db.query(tabelaSelecionada, campos, null, null, null, null, null);
-
-    if (cursor != null) {
-        cursor.moveToFirst();  // Move para o primeiro item, caso haja dados
-    }
-    db.close();
-    return cursor;
-    }
-
 }
