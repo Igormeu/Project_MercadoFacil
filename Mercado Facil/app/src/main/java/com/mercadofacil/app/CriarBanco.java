@@ -1,3 +1,5 @@
+package com.mercadofacil.app;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -30,7 +32,8 @@ public class CriarBanco extends SQLiteOpenHelper {
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "nome TEXT, " +
                 "quantidadePorUnidade DOUBLE, " +
-                "unidadeMedida INTERGER" +
+                "unidadeMedida INTEGER," +
+                "categoria TEXT" +
                 ");";
         
         // Tabela 3: listaPreco
