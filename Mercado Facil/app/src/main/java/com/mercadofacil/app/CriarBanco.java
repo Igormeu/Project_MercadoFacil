@@ -33,7 +33,7 @@ public class CriarBanco extends SQLiteOpenHelper {
                 "nome TEXT, " +
                 "quantidadePorUnidade DOUBLE, " +
                 "unidadeMedida INTEGER," +  //Deve ser do tipo Text
-                "categoria TEXT" +
+                "categoria TEXT" + //Deveria Ser Marca
                 ");";
         
         // Tabela 3: listaPreco
