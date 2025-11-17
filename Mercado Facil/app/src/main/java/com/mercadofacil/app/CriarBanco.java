@@ -32,7 +32,7 @@ public class CriarBanco extends SQLiteOpenHelper {
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "nome TEXT, " +
                 "quantidadePorUnidade DOUBLE, " +
-                "unidadeMedida INTEGER," +
+                "unidadeMedida INTEGER," +  //Deve ser do tipo Text
                 "categoria TEXT" +
                 ");";
         
