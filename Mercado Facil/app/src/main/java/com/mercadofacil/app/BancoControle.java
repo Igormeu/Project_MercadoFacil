@@ -1,4 +1,4 @@
-package com.mercadofacil.app;
+ilpackage com.mercadofacil.app;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -121,13 +121,14 @@ public class BancoControle {
      * Insere um novo usuário.
      * 🚨 ALERTA DE SEGURANÇA: Salvando senha em texto puro!
      */
-    public String insereUsuario(String login, String senha) {
+    public String insereUsuario(String email, String senha, String nomeCompleto) {
         ContentValues valores = new ContentValues();
         long resultado = -1;
 
         try {
-            valores.put("login", login);
-            valores.put("senha", senha); // ⚠️ INSEGURO!
+            valores.put("nomeCompleto", nomeCompleto);
+            valores.put("email", email);
+            valores.put("senha", senha); 
 
             resultado = db.insert("Usuarios", null, valores);
 
@@ -172,7 +173,7 @@ public class BancoControle {
                 break;
             case "Usuarios":
                 // Corrigido para incluir 'senha' (como no seu código)
-                campos = new String[] {"_id", "login", "senha"};
+                campos = new String[] {"_id","nomeCompleto", "email", "senha"};
                 break;
             default:
                 throw new IllegalArgumentException("Tabela inválida: " + tabelaSelecionada);
