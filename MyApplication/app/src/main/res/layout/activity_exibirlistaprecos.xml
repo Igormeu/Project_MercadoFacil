@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="450dp"
+        android:layout_height="143dp"
+        app:layout_constraintCircleRadius="0dp"
+        tools:layout_editor_absoluteX="-21dp"
+        tools:layout_editor_absoluteY="-27dp" />
+
+    <SearchView
+        android:layout_width="201dp"
+        android:layout_height="56dp"
+        android:background="#897A7A"
+        tools:layout_editor_absoluteX="192dp"
+        tools:layout_editor_absoluteY="134dp" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="234dp"
+        android:layout_height="62dp"
+        android:text="{Nome Item}; {Localidade}; {Ultima Atualizacao}"
+        android:textAlignment="center"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="215dp" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="132dp"
+        android:layout_height="27dp"
+        android:indeterminate="false"
+        android:max="0"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        tools:layout_editor_absoluteX="261dp"
+        tools:layout_editor_absoluteY="250dp" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="133dp"
+        android:layout_height="27dp"
+        android:text="R$ {Preço}"
+        android:textAlignment="center"
+        tools:layout_editor_absoluteX="260dp"
+        tools:layout_editor_absoluteY="215dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
