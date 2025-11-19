@@ -49,7 +49,8 @@ public class CriarBanco extends SQLiteOpenHelper {
         
         String sqlUsuarios = "CREATE TABLE IF NOT EXISTS Usuarios (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "login TEXT, " +
+                "nomeCompleto TEXT, " +
+                "email TEXT, " +
                 "senha TEXT"  +
                 ");";
 
