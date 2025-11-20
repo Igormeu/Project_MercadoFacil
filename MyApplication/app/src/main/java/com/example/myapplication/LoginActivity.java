@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         if (credenciaisValidas) {
             Toast.makeText(this, "Login efetuado com sucesso!", Toast.LENGTH_SHORT).show();
 
-            Intent intentLogin = new Intent(LoginActivity.this, ExibirListaPrecosActivity.class);
+            Intent intentLogin = new Intent(LoginActivity.this, activity_menu.class);
             startActivity(intentLogin);
             finish(); // Finaliza a tela de Login para que o usuário não volte com o botão 'Back'
         } else {

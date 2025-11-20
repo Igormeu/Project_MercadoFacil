@@ -2,4 +2,35 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Roxos e variações -->
+    <color name="roxo">#7B1FA2</color>
+    <color name="roxoClaro">#F4EEEE</color>
+    <color name="roxoEscuro">#4A0072</color>
+    <color name="roxoMedio">#9C27B0</color>
+    <color name="lavanda">#E1BEE7</color>
+    <color name="ametista">#BA68C8</color>
+    <color name="ametistatransp">#99BA68C8</color>
+
+    <!-- Neutros de apoio -->
+    <color name="cinzaClaro">#F2F2F2</color>
+    <color name="cinzaMedio">#BDBDBD</color>
+    <color name="cinzaEscuro">#616161</color>
+
+    <!-- Cores de destaque -->
+    <color name="vermelho">#D32F2F</color>
+    <color name="vermelhoClaro">#FFCDD2</color>
+    <color name="verde">#388E3C</color>
+    <color name="verdeClaro">#C8E6C9</color>
+    <color name="azul">#1976D2</color>
+    <color name="azulClaro">#BBDEFB</color>
+
+    <!-- Cores para feedback -->
+    <color name="sucesso">#4CAF50</color>
+    <color name="aviso">#FFC107</color>
+    <color name="erro">#F44336</color>
+    <color name="informacao">#2196F3</color>
+
+    "
+
 </resources>

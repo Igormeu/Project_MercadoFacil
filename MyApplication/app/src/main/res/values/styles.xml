@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ContainerComponents">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:background">@drawable/conteinercomponentes</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_margin">15dp</item>
+
+
+    </style>
+
+    <style name="conteinerlogo">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">150dp</item>
+        <item name="android:layout_margin">5dp</item>
+
+    </style>
+
+    <style name="conteinermain">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">250dp</item>
+
+        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_marginRight">25dp</item>
+        <item name="android:layout_marginTop">100dp</item>
+        <item name="android:paddingTop">20dp</item>
+
+        <item name="android:background">@drawable/conteinermain</item>
+
+    </style>
+
+    <style name="edtText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="background">@drawable/edtform</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_marginLeft">40dp</item>
+        <item name="android:layout_marginRight">40dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+
+    </style>
+
+    <style name="buttonmenu">
+        <item name="android:layout_width">175dp</item>
+        <item name="android:layout_height">175dp</item>
+
+        <item name="android:layout_marginLeft">12dp</item>
+        <item name="android:layout_marginRight">12dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+
+        <item name="background">@drawable/buttonmenu</item>
+
+    </style>
+
+    <style name="textview">
+        <item name="android:layout_width">175dp</item>
+        <item name="android:textColor">@color/roxoClaro</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:textAlignment">center</item>
+
+    </style>
+
+    <style name="alerts">
+        <item name="android:layout_width">280dp</item>
+        <item name="android:textColor">@color/cinzaClaro</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">15dp</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:padding">2dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:textAlignment">center</item>
+
+    </style>
+
+    <style name="textcolorview">
+        <item name="android:textColor">@color/cinzaEscuro</item>
+        <item name="android:textColorHint">@color/cinzaEscuro</item>
+
+    </style>
+
+</resources>
