@@ -1,0 +1,109 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".CadastrarEstabelecimentoActivity">
+
+    <TextView
+        android:id="@+id/tv_titulo_estabelecimento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cadastro de Estabelecimento"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/et_nome_estab"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Nome do Estabelecimento"
+        android:inputType="textCapWords"
+        app:layout_constraintTop_toBottomOf="@id/tv_titulo_estabelecimento"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/et_rede"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Rede (Opcional)"
+        android:inputType="textCapWords"
+        app:layout_constraintTop_toBottomOf="@id/et_nome_estab"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <EditText
+        android:id="@+id/et_rua"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Rua / Logradouro"
+        android:inputType="textCapWords"
+        app:layout_constraintTop_toBottomOf="@id/et_rede"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <EditText
+        android:id="@+id/et_bairro"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Bairro"
+        android:inputType="textCapWords"
+        app:layout_constraintTop_toBottomOf="@id/et_rua"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <EditText
+        android:id="@+id/et_cidade"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Cidade"
+        android:inputType="textCapWords"
+        app:layout_constraintTop_toBottomOf="@id/et_bairro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <EditText
+        android:id="@+id/et_estado"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Estado (UF)"
+        android:inputType="textCapCharacters"
+        android:maxLength="2"
+        app:layout_constraintTop_toBottomOf="@id/et_cidade"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <EditText
+        android:id="@+id/et_cep"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="CEP"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@id/et_estado"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btn_cadastrar_estabelecimento"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Cadastrar Estabelecimento"
+        app:layout_constraintTop_toBottomOf="@id/et_cep"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
