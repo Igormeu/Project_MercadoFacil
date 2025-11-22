@@ -3,8 +3,10 @@ package com.example.myapplication;
 import android.os.Bundle;
 // 👇 IMPORTS ESSENCIAIS
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 // 👆 IMPORTS ESSENCIAIS
 
 import androidx.activity.EdgeToEdge;
@@ -22,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-
         Button btnComecar = findViewById(R.id.btn_vamos_comecar);
 
         // 2. ADICIONAR O CLIQUE
@@ -37,11 +38,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
     }
+
+
 }

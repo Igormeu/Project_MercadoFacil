@@ -65,7 +65,7 @@ public class BancoControle {
      * Insere um novo produto.
      * (Seguindo seu código, com a coluna 'categoria')
      */
-    public String insereProduto(String nome, double quantidadePorUnidade, int unidadeMedida, String categoria) {
+    public String insereProduto(String nome, double quantidadePorUnidade, String unidadeMedida, String categoria) {
         ContentValues valores = new ContentValues();
         long resultado = -1;
 
