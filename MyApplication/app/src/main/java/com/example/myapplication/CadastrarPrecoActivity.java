@@ -1,12 +1,14 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,14 +24,26 @@ import java.util.Map;
 public class CadastrarPrecoActivity extends AppCompatActivity {
 
     private BancoControle bancoControle;
-    private Spinner spinnerEnderecos;
-    private Spinner spinnerProdutos;
+
+    private AutoCompleteTextView autoCompleteNomesEstab;
+    private AutoCompleteTextView autoCompleteDetalheEnd;
+    private AutoCompleteTextView autoCompleteMarcas;
+    private AutoCompleteTextView autoCompleteProdutos;
+
     private EditText editPrecoVenda;
     private Button btnSalvarPreco;
-
-    // Mapas para armazenar a relação Nome -> ID
-    private Map<String, Integer> mapaEnderecos;
+    private Map<String, Map<String, Integer>> mapaDetalhesEnderecosPorNome;
+    private Map<String, List<ProdutoDetalhe>> mapaProdutosPorNome;
     private Map<String, Integer> mapaProdutos;
+    private static class ProdutoDetalhe {
+        int id;
+        String marca;
+
+        public ProdutoDetalhe(int id, String marca) {
+            this.id = id;
+            this.marca = marca;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +51,12 @@ public class CadastrarPrecoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cadastrar_lista);
 
         bancoControle = new BancoControle(this);
-        spinnerEnderecos = findViewById(R.id.spinner_enderecos);
-        spinnerProdutos = findViewById(R.id.spinner_produtos);
+
+        autoCompleteNomesEstab = findViewById(R.id.auto_complete_enderecos);
+        autoCompleteDetalheEnd = findViewById(R.id.auto_complete_detalhe_endereco);
+        autoCompleteMarcas = findViewById(R.id.auto_complete_marcas);
+        autoCompleteProdutos = findViewById(R.id.auto_complete_produtos);
+
         editPrecoVenda = findViewById(R.id.edit_preco_venda);
         btnSalvarPreco = findViewById(R.id.btn_salvar_preco);
 
@@ -46,15 +64,35 @@ public class CadastrarPrecoActivity extends AppCompatActivity {
             bancoControle.abrirBanco();
         } catch (Exception e) {
             Toast.makeText(this, "Erro ao abrir o banco de dados.", Toast.LENGTH_LONG).show();
-            finish(); // Encerra a activity se não conseguir abrir o banco
+            finish();
             return;
         }
 
-        // 1. Carregar e popular Spinners
-        carregarEnderecos();
+        carregarNomesEnderecos();
         carregarProdutos();
 
-        // 2. Configurar botão de salvar
+        autoCompleteNomesEstab.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String nomeEstabSelecionado = (String) parent.getItemAtPosition(position);
+                carregarDetalhesEndereco(nomeEstabSelecionado);
+            }
+        });
+
+        autoCompleteProdutos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String produtoSelecionado = (String) parent.getItemAtPosition(position);
+                carregarMarcasDisponiveis(produtoSelecionado);
+            }
+        });
+
+        autoCompleteMarcas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            }
+        });
+
         btnSalvarPreco.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,47 +101,86 @@ public class CadastrarPrecoActivity extends AppCompatActivity {
         });
     }
 
-    // --- MÉTODOS DE CARREGAMENTO DE DADOS ---
-
-    private void carregarEnderecos() {
+    private void carregarNomesEnderecos() {
         Cursor cursor = bancoControle.carregaDados("Enderecos");
         List<String> nomesEnderecos = new ArrayList<>();
-        mapaEnderecos = new HashMap<>();
+        mapaDetalhesEnderecosPorNome = new HashMap<>();
 
         if (cursor != null && cursor.moveToFirst()) {
-            do {
-                // Captura o ID e o nome. Os índices são 0 para _id e 1 para nomeEstab (ver BancoControle)
-                int id = cursor.getInt(0);
-                String nome = cursor.getString(1); // coluna nomeEstab
+            Map<String, Boolean> nomesUnicos = new HashMap<>();
 
-                nomesEnderecos.add(nome);
-                mapaEnderecos.put(nome, id);
+            do {
+                String nome = cursor.getString(1);
+
+                if (!nomesUnicos.containsKey(nome)) {
+                    nomesUnicos.put(nome, true);
+                    nomesEnderecos.add(nome);
+
+                    Map<String, Integer> detalhes = bancoControle.buscarEnderecosPorNome(nome);
+                    mapaDetalhesEnderecosPorNome.put(nome, detalhes);
+                }
 
             } while (cursor.moveToNext());
             cursor.close();
         } else {
-            nomesEnderecos.add("Nenhum Endereço Cadastrado");
+            nomesEnderecos.add("Nenhum Estabelecimento Cadastrado");
             Toast.makeText(this, "⚠️ Cadastre um Endereço primeiro!", Toast.LENGTH_LONG).show();
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item, nomesEnderecos);
-        spinnerEnderecos.setAdapter(adapter);
+                android.R.layout.simple_dropdown_item_1line, nomesEnderecos);
+        autoCompleteNomesEstab.setAdapter(adapter);
+
+        if (!nomesEnderecos.isEmpty()) {
+            autoCompleteNomesEstab.setText(nomesEnderecos.get(0), false);
+            carregarDetalhesEndereco(nomesEnderecos.get(0));
+        } else {
+            carregarDetalhesEndereco(null);
+        }
+    }
+
+    private void carregarDetalhesEndereco(String nomeEstab) {
+        List<String> detalhes = new ArrayList<>();
+        String detalheInicial = "Selecione um Endereço";
+
+        if (nomeEstab != null && mapaDetalhesEnderecosPorNome.containsKey(nomeEstab)) {
+            Map<String, Integer> mapaAtual = mapaDetalhesEnderecosPorNome.get(nomeEstab);
+            detalhes.addAll(mapaAtual.keySet());
+            if (!detalhes.isEmpty()) {
+                detalheInicial = detalhes.get(0);
+            }
+        } else {
+            detalhes.add(detalheInicial);
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, detalhes);
+        autoCompleteDetalheEnd.setAdapter(adapter);
+
+        autoCompleteDetalheEnd.setText(detalheInicial, false);
     }
 
     private void carregarProdutos() {
         Cursor cursor = bancoControle.carregaDados("Produtos");
         List<String> nomesProdutos = new ArrayList<>();
+        mapaProdutosPorNome = new HashMap<>();
         mapaProdutos = new HashMap<>();
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                // Captura o ID e o nome. Os índices são 0 para _id e 1 para nome
                 int id = cursor.getInt(0);
-                String nome = cursor.getString(1); // coluna nome
+                String nome = cursor.getString(1);
+                String marca = cursor.getString(4);
 
-                nomesProdutos.add(nome);
-                mapaProdutos.put(nome, id);
+                if (!mapaProdutosPorNome.containsKey(nome)) {
+                    mapaProdutosPorNome.put(nome, new ArrayList<>());
+                    nomesProdutos.add(nome);
+                }
+
+                mapaProdutosPorNome.get(nome).add(new ProdutoDetalhe(id, marca));
+
+                String chaveFinal = nome + " (" + marca + ")";
+                mapaProdutos.put(chaveFinal, id);
 
             } while (cursor.moveToNext());
             cursor.close();
@@ -113,21 +190,61 @@ public class CadastrarPrecoActivity extends AppCompatActivity {
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item, nomesProdutos);
-        spinnerProdutos.setAdapter(adapter);
+                android.R.layout.simple_dropdown_item_1line, nomesProdutos);
+        autoCompleteProdutos.setAdapter(adapter);
+
+        if (!nomesProdutos.isEmpty()) {
+            autoCompleteProdutos.setText(nomesProdutos.get(0), false);
+            carregarMarcasDisponiveis(nomesProdutos.get(0));
+        } else {
+            carregarMarcasDisponiveis(null);
+        }
     }
 
-    // --- MÉTODO DE SALVAR ---
+
+    private void carregarMarcasDisponiveis(String nomeProduto) {
+        List<String> marcas = new ArrayList<>();
+        String marcaInicial = "Selecione a Marca";
+
+        autoCompleteMarcas.setText(marcaInicial, false);
+
+        if (nomeProduto != null && mapaProdutosPorNome.containsKey(nomeProduto)) {
+            List<ProdutoDetalhe> detalhes = mapaProdutosPorNome.get(nomeProduto);
+            for (ProdutoDetalhe detalhe : detalhes) {
+                marcas.add(detalhe.marca);
+            }
+
+            if (!marcas.isEmpty()) {
+                marcaInicial = marcas.get(0);
+            }
+        } else {
+            marcas.add(marcaInicial);
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, marcas);
+        autoCompleteMarcas.setAdapter(adapter);
+        autoCompleteMarcas.setText(marcaInicial, false);
+    }
+
 
     private void salvarListaPreco() {
-        // 1. Validar seleção e preço
-        String nomeEstabSelecionado = (String) spinnerEnderecos.getSelectedItem();
-        String nomeProdutoSelecionado = (String) spinnerProdutos.getSelectedItem();
+        String nomeEstabSelecionado = autoCompleteNomesEstab.getText().toString();
+        String detalheEndSelecionado = autoCompleteDetalheEnd.getText().toString();
+        String nomeProdutoSelecionado = autoCompleteProdutos.getText().toString();
+        String marcaSelecionada = autoCompleteMarcas.getText().toString(); // **NOVO**
         String precoString = editPrecoVenda.getText().toString();
 
-        if (nomeEstabSelecionado.equals("Nenhum Endereço Cadastrado") ||
+        if (nomeEstabSelecionado.equals("Nenhum Estabelecimento Cadastrado") ||
+                detalheEndSelecionado.equals("Selecione um Endereço") ||
                 nomeProdutoSelecionado.equals("Nenhum Produto Cadastrado")) {
-            Toast.makeText(this, "É necessário ter Endereços e Produtos cadastrados.", Toast.LENGTH_LONG).show();
+
+            Toast.makeText(this, "É necessário selecionar um Estabelecimento e um Produto válidos.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (marcaSelecionada.equals("Selecione a Marca") || marcaSelecionada.isEmpty()) {
+            Toast.makeText(this, "É necessário selecionar a Marca do Produto.", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -144,41 +261,52 @@ public class CadastrarPrecoActivity extends AppCompatActivity {
             return;
         }
 
-        // 2. Obter IDs
-        int idEndereco = mapaEnderecos.get(nomeEstabSelecionado);
-        int idProduto = mapaProdutos.get(nomeProdutoSelecionado);
+        Map<String, Integer> detalhesAtuais = mapaDetalhesEnderecosPorNome.get(nomeEstabSelecionado);
 
-        // 3. Obter data atual
+        if (detalhesAtuais == null || !detalhesAtuais.containsKey(detalheEndSelecionado)) {
+            Toast.makeText(this, "Erro: Detalhe do endereço não encontrado.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int idEndereco = detalhesAtuais.get(detalheEndSelecionado);
+
+        String chaveFinalProduto = nomeProdutoSelecionado + " (" + marcaSelecionada + ")";
+
+        if (!mapaProdutos.containsKey(chaveFinalProduto)) {
+            Toast.makeText(this, "Erro: Combinação de Produto e Marca não encontrada.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int idProduto = mapaProdutos.get(chaveFinalProduto);
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         String dataAtualizacao = sdf.format(new Date());
 
-        // 4. Inserir no banco
         String resultado = bancoControle.insereListaPreco(idEndereco, idProduto, preco, dataAtualizacao);
 
         Toast.makeText(this, resultado, Toast.LENGTH_LONG).show();
 
         if (resultado.startsWith("✅")) {
-            // Limpar campo após sucesso
             editPrecoVenda.setText("");
+            finish();
         }
     }
 
-    // --- MÉTODOS DO CICLO DE VIDA ---
     @Override
     protected void onResume() {
         super.onResume();
-        // Reabre o banco, caso tenha sido fechado
         try {
             bancoControle.abrirBanco();
         } catch (Exception e) {
             Toast.makeText(this, "Erro ao reabrir o banco de dados.", Toast.LENGTH_SHORT).show();
         }
+        carregarNomesEnderecos();
+        carregarProdutos();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        // Fecha o banco quando a Activity não está visível
         bancoControle.fecharBanco();
     }
 }

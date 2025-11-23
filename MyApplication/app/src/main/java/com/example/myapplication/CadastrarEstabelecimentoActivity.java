@@ -19,7 +19,6 @@ public class CadastrarEstabelecimentoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cadastrar_estabelecimento);
 
         bancoControle = new BancoControle(this);
-
         etNomeEstab = findViewById(R.id.et_nome_estab);
         etRede = findViewById(R.id.et_rede);
         etRua = findViewById(R.id.et_rua);
@@ -27,13 +26,13 @@ public class CadastrarEstabelecimentoActivity extends AppCompatActivity {
         etBairro = findViewById(R.id.et_bairro);
         etEstado = findViewById(R.id.et_estado);
         etCep = findViewById(R.id.et_cep);
+
         Button btnCadastrar = findViewById(R.id.btn_cadastrar_estabelecimento);
 
         btnCadastrar.setOnClickListener(v -> cadastrarEstabelecimento());
     }
 
     private void cadastrarEstabelecimento() {
-        // 1. Coleta os dados
         String nomeEstab = etNomeEstab.getText().toString().trim();
         String rede = etRede.getText().toString().trim();
         String rua = etRua.getText().toString().trim();
@@ -49,7 +48,6 @@ public class CadastrarEstabelecimentoActivity extends AppCompatActivity {
 
         String resultado = "";
         try {
-
             bancoControle.abrirBanco();
 
             resultado = bancoControle.insereEndereco(
@@ -62,12 +60,11 @@ public class CadastrarEstabelecimentoActivity extends AppCompatActivity {
                     cep
             );
 
-            // 4. Feedback para o usuário
             Toast.makeText(this, resultado, Toast.LENGTH_LONG).show();
 
             if (resultado.startsWith("✅")) {
-                // Limpa os campos após o sucesso
                 limparCampos();
+                finish();
             }
 
         } catch (Exception e) {
@@ -95,7 +92,6 @@ public class CadastrarEstabelecimentoActivity extends AppCompatActivity {
         try {
             bancoControle.abrirBanco();
         } catch (Exception e) {
-            // Log de erro
         }
     }
 

@@ -7,7 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class CriarBanco extends SQLiteOpenHelper {
 
     private static final String NOME_BANCO = "MercFacil.db";
-    private static final int VERSAO = 3;
+    // Se precisar atualizar o banco, mude a versao para um valor maior que o atual
+    private static final int VERSAO = 9;
 
     public CriarBanco(Context context) {
         super(context, NOME_BANCO, null, VERSAO);
@@ -15,7 +16,6 @@ public class CriarBanco extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Tabela 1: Endereços
         String sqlEnderecos = "CREATE TABLE IF NOT EXISTS Enderecos (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "nomeEstab TEXT, " +
@@ -27,16 +27,14 @@ public class CriarBanco extends SQLiteOpenHelper {
                 "cep TEXT" +
                 ");";
 
-        // Tabela 2: Produtos
         String sqlProdutos = "CREATE TABLE IF NOT EXISTS Produtos (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "nome TEXT, " +
                 "quantidadePorUnidade DOUBLE, " +
-                "unidadeMedida TEXT," +  //Deve ser do tipo Text
-                "categoria TEXT" + //Deveria Ser Marca
+                "unidadeMedida TEXT," +
+                "marca TEXT" +
                 ");";
-        
-        // Tabela 3: listaPreco
+
         String sqlListaPrecos = "CREATE TABLE IF NOT EXISTS ListaPrecos (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "idEndereco INTEGER, " +
@@ -54,16 +52,17 @@ public class CriarBanco extends SQLiteOpenHelper {
                 "senha TEXT"  +
                 ");";
 
-        // Executa as duas criações
+
         db.execSQL(sqlEnderecos);
         db.execSQL(sqlProdutos);
         db.execSQL(sqlListaPrecos);
         db.execSQL(sqlUsuarios);
+
+        DadosIniciais.popularDados(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Caso precise atualizar a estrutura do banco:
         db.execSQL("DROP TABLE IF EXISTS Enderecos");
         db.execSQL("DROP TABLE IF EXISTS Produtos");
         db.execSQL("DROP TABLE IF EXISTS ListaPrecos");

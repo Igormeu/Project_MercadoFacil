@@ -1,226 +1,325 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/scroll_view_menu"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/backgroundv2"
+    android:fillViewport="true"
     tools:context=".activity_menu">
 
-    <View
-        android:id="@+id/conteinermenulogo"
-        style="@style/conteinerlogo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <ImageView
-        android:id="@+id/imageViewLogo"
-        android:layout_width="150dp"
-        android:layout_height="120dp"
-        android:src="@drawable/logomercadofacil"
-        app:layout_constraintEnd_toEndOf="@id/conteinermenulogo"
-        app:layout_constraintStart_toStartOf="@id/conteinermenulogo"
-        app:layout_constraintTop_toTopOf="@id/conteinermenulogo" />
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="29dp"
-        app:layout_constraintStart_toStartOf="@id/conteinermenulogo"
-        app:layout_constraintEnd_toEndOf="@id/conteinermenulogo"
-        app:layout_constraintTop_toBottomOf="@id/imageViewLogo"
-        android:text="Mercado Fácil"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/roxo"
-        />
+        android:layout_height="wrap_content"
+        android:paddingBottom="24dp">
+
+        <TextView
+            android:id="@+id/tv_boas_vindas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="Bem-vindo(a), Usuário!"
+            android:textColor="@color/roxo"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/btn_logout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_logout"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/roxo"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="SAIR"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
+        <View
+            android:id="@+id/conteinermenulogo"
+            style="@style/conteinerlogo"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_boas_vindas" />
 
-    <View
-        android:id="@+id/conteinermenu"
-        style="@style/ContainerComponents"
-        app:layout_constraintTop_toBottomOf="@id/conteinermenulogo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        <ImageView
+            android:id="@+id/imageViewLogo"
+            android:layout_width="150dp"
+            android:layout_height="120dp"
+            android:src="@drawable/logomercadofacil"
+            app:layout_constraintEnd_toEndOf="@id/conteinermenulogo"
+            app:layout_constraintStart_toStartOf="@id/conteinermenulogo"
+            app:layout_constraintTop_toTopOf="@id/conteinermenulogo" />
 
-    <View
-        android:id="@+id/buttonmeunu1"
-        style="@style/buttonmenu"
-        android:background="@drawable/buttonmenu"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="29dp"
+            android:text="Mercado Fácil"
+            android:textAlignment="center"
+            android:textColor="@color/roxo"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/conteinermenulogo"
+            app:layout_constraintStart_toStartOf="@id/conteinermenulogo"
+            app:layout_constraintTop_toBottomOf="@id/imageViewLogo" />
 
-        app:layout_constraintTop_toBottomOf="@id/conteinermenu"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/buttonmeunu2"/>
-
-    <View
-        android:id="@+id/buttonmeunu2"
-        style="@style/buttonmenu"
-        android:background="@drawable/buttonmenu"
-
-        app:layout_constraintTop_toBottomOf="@id/conteinermenu"
-        app:layout_constraintStart_toEndOf="@id/buttonmeunu1"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
-
-    <View
-        android:id="@+id/buttonmeunu3"
-        style="@style/buttonmenu"
-        android:background="@drawable/buttonmenu"
-
-
-        app:layout_constraintTop_toBottomOf="@id/buttonmeunu1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/buttonmeunu4"
-        />
-
-    <View
-        android:id="@+id/buttonmeunu4"
-        android:background="@drawable/buttonmenu"
-        app:layout_constraintTop_toBottomOf="@id/buttonmeunu2"
-        app:layout_constraintStart_toEndOf="@id/buttonmeunu3"
-        app:layout_constraintEnd_toEndOf="parent"
-        style="@style/buttonmenu"
-
-        />
-
-    <TextView
-    android:id="@+id/textViewmenu1"
-    style="@style/textview"
-    android:text="Acessar \nLista\u00A0de\u00A0Preços"
-
-    app:layout_constraintTop_toTopOf="@id/buttonmeunu1"
-    app:layout_constraintStart_toStartOf="@id/buttonmeunu1"
-    app:layout_constraintEnd_toEndOf="@id/buttonmeunu1"
-
-    />
-
-    <ImageView
-        android:id="@+id/imagemmenu1"
-        android:src="@drawable/icone_melhoresprecos"
-        android:layout_height="100dp"
-        android:layout_width="100dp"
-        app:layout_constraintTop_toBottomOf="@id/textViewmenu1"
-        app:layout_constraintStart_toStartOf="@id/buttonmeunu1"
-        app:layout_constraintEnd_toEndOf="@id/buttonmeunu1"
-        android:paddingBottom="20dp"
-        />
-
-    <TextView
-        android:id="@+id/textViewmenu2"
-        style="@style/textview"
-        android:text="Adicionar Produtos"
-
-        app:layout_constraintTop_toTopOf="@id/buttonmeunu2"
-        app:layout_constraintStart_toStartOf="@id/buttonmeunu2"
-        app:layout_constraintEnd_toEndOf="@id/buttonmeunu2"
-
-        />
-
-    <ImageView
-        android:id="@+id/imagemmenu2"
-        android:src="@drawable/icon_adicionarirtem"
-        android:layout_height="100dp"
-        android:layout_width="100dp"
-        app:layout_constraintTop_toBottomOf="@id/textViewmenu2"
-        app:layout_constraintStart_toStartOf="@id/buttonmeunu2"
-        app:layout_constraintEnd_toEndOf="@id/buttonmeunu2"
-        android:paddingBottom="20dp"
-        />
-
-    <TextView
-        android:id="@+id/textViewmenu3"
-        style="@style/textview"
-        android:text="Adicionar \nEstabelecimento"
-
-        app:layout_constraintTop_toTopOf="@id/buttonmeunu3"
-        app:layout_constraintStart_toStartOf="@id/buttonmeunu3"
-        app:layout_constraintEnd_toEndOf="@id/buttonmeunu3"
-
-        />
-
-    <ImageView
-        android:id="@+id/imagemmenu3"
-        android:src="@drawable/icone_adicionarestabelecimento"
-        android:layout_height="100dp"
-        android:layout_width="100dp"
-        app:layout_constraintTop_toBottomOf="@id/textViewmenu3"
-        app:layout_constraintStart_toStartOf="@id/buttonmeunu3"
-        app:layout_constraintEnd_toEndOf="@id/buttonmeunu3"
-        android:paddingBottom="20dp"
-        />
-
-    <TextView
-        android:id="@+id/textViewmenu4"
-        style="@style/textview"
-        android:text="Conheça mais sobre Nós"
-
-        app:layout_constraintTop_toTopOf="@id/buttonmeunu4"
-        app:layout_constraintStart_toStartOf="@id/buttonmeunu4"
-        app:layout_constraintEnd_toEndOf="@id/buttonmeunu4"
-
-        />
-
-    <ImageView
-        android:id="@+id/imagemmenu4"
-        android:src="@drawable/icon_aboutus"
-        android:layout_height="100dp"
-        android:layout_width="100dp"
-        app:layout_constraintTop_toBottomOf="@id/textViewmenu4"
-        app:layout_constraintStart_toStartOf="@id/buttonmeunu4"
-        app:layout_constraintEnd_toEndOf="@id/buttonmeunu4"
-        android:paddingBottom="20dp"
-        />
-
-    <TextView
-        android:id="@+id/suporteTextInfo"
-        android:text="Entre em contato conosco por support@mercadofacil.com.br"
-        android:textSize="10sp"
-        android:textAlignment="center"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:layout_height="12dp"
-        android:layout_width="match_parent"
-        android:layout_marginBottom="12dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:textColor="@color/roxoClaro"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        />
-
-    <ImageView
-        android:id="@+id/imagealertmenu"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_margin="20dp"
-        android:src="@drawable/icon_alert"
-        app:layout_constraintBottom_toBottomOf="@id/conteinermenu"
-        app:layout_constraintStart_toStartOf="@id/conteinermenu"
-        app:layout_constraintTop_toTopOf="@id/conteinermenu"/>
-
-    <TextView
-        android:id="@+id/alertmelhorpreco"
-        style="@style/alerts"
-        android:text="O item {item} está  apenas {valor} no {estabelecimeno}"
-        app:layout_constraintBottom_toTopOf="@id/alertmelhorpreco"
-        app:layout_constraintStart_toEndOf="@id/imagealertmenu"
-        app:layout_constraintEnd_toEndOf="@id/conteinermenu"
-        app:layout_constraintTop_toTopOf="@id/conteinermenu"/>
-    <TextView
-        android:id="@+id/alertmelhortabelecimentos"
-        style="@style/alerts"
-        android:text="O {estabelecimento} localizado na rua {rua} está com os melhores preços registrados"
-        app:layout_constraintBottom_toBottomOf="@id/conteinermenu"
-        app:layout_constraintStart_toEndOf="@id/imagealertmenu"
-        app:layout_constraintEnd_toEndOf="@id/conteinermenu"
-        app:layout_constraintTop_toBottomOf="@id/alertmelhorpreco"/>
+        <TextView
+            android:id="@+id/tv_titulo_atualizacoes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="ÚLTIMAS ATUALIZAÇÕES"
+            android:textAlignment="center"
+            android:textColor="@color/roxo"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/conteinermenulogo" />
 
 
+        <View
+            android:id="@+id/conteinermenu"
+            style="@style/ContainerComponents"
+            android:minHeight="120dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_titulo_atualizacoes"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/image_icone_atualizacao"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="12dp"
+            android:src="@drawable/icon_alert"
+            app:layout_constraintBottom_toBottomOf="@id/conteinermenu"
+            app:layout_constraintStart_toStartOf="@id/conteinermenu"
+            app:layout_constraintTop_toTopOf="@id/conteinermenu"/>
+
+        <TextView
+            android:id="@+id/tv_ultima_atualizacao_1"
+            style="@style/alerts"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:text="Nenhuma atualização recente..."
+            app:layout_constraintBottom_toTopOf="@id/tv_ultima_atualizacao_2"
+            app:layout_constraintStart_toEndOf="@id/image_icone_atualizacao"
+            app:layout_constraintEnd_toEndOf="@id/conteinermenu"
+            app:layout_constraintTop_toTopOf="@id/image_icone_atualizacao"
+            app:layout_constraintVertical_chainStyle="packed"
+            />
+
+        <TextView
+            android:id="@+id/tv_ultima_atualizacao_2"
+            style="@style/alerts"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="0dp"
+            android:text="Aguardando mais registros..."
+            app:layout_constraintBottom_toBottomOf="@id/image_icone_atualizacao"
+            app:layout_constraintStart_toEndOf="@id/image_icone_atualizacao"
+            app:layout_constraintEnd_toEndOf="@id/conteinermenu"
+            app:layout_constraintTop_toBottomOf="@id/tv_ultima_atualizacao_1"
+            />
+
+        <View
+            android:id="@+id/buttonmeunu1"
+            style="@style/buttonmenu"
+            android:background="@drawable/buttonmenu"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintTop_toBottomOf="@id/conteinermenu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/buttonmeunu2"/>
+
+        <View
+            android:id="@+id/buttonmeunu2"
+            style="@style/buttonmenu"
+            android:background="@drawable/buttonmenu"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintTop_toBottomOf="@id/conteinermenu"
+            app:layout_constraintStart_toEndOf="@id/buttonmeunu1"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <View
+            android:id="@+id/buttonmeunu3"
+            style="@style/buttonmenu"
+            android:background="@drawable/buttonmenu"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintTop_toBottomOf="@id/buttonmeunu1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/buttonmeunu4"
+            />
+
+        <View
+            android:id="@+id/buttonmeunu4"
+            style="@style/buttonmenu"
+            android:background="@drawable/buttonmenu"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintTop_toBottomOf="@id/buttonmeunu2"
+            app:layout_constraintStart_toEndOf="@id/buttonmeunu3"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/textViewmenu1"
+            style="@style/textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Acessar \nLista\u00A0de\u00A0Preços"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="@id/buttonmeunu1"
+            app:layout_constraintStart_toStartOf="@id/buttonmeunu1"
+            app:layout_constraintEnd_toEndOf="@id/buttonmeunu1"
+            />
+
+        <ImageView
+            android:id="@+id/imagemmenu1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:src="@drawable/icone_melhoresprecos"
+            app:layout_constraintTop_toBottomOf="@id/textViewmenu1"
+            app:layout_constraintBottom_toBottomOf="@id/buttonmeunu1"
+            app:layout_constraintStart_toStartOf="@id/buttonmeunu1"
+            app:layout_constraintEnd_toEndOf="@id/buttonmeunu1"
+            />
+
+        <TextView
+            android:id="@+id/textViewmenu2"
+            style="@style/textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Adicionar Produtos"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="@id/buttonmeunu2"
+            app:layout_constraintStart_toStartOf="@id/buttonmeunu2"
+            app:layout_constraintEnd_toEndOf="@id/buttonmeunu2"
+            />
+
+        <ImageView
+            android:id="@+id/imagemmenu2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:src="@drawable/icon_adicionarirtem"
+            app:layout_constraintTop_toBottomOf="@id/textViewmenu2"
+            app:layout_constraintBottom_toBottomOf="@id/buttonmeunu2"
+            app:layout_constraintStart_toStartOf="@id/buttonmeunu2"
+            app:layout_constraintEnd_toEndOf="@id/buttonmeunu2"
+            />
+
+        <TextView
+            android:id="@+id/textViewmenu3"
+            style="@style/textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Adicionar \nEstabelecimento"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="@id/buttonmeunu3"
+            app:layout_constraintStart_toStartOf="@id/buttonmeunu3"
+            app:layout_constraintEnd_toEndOf="@id/buttonmeunu3"
+            />
+
+        <ImageView
+            android:id="@+id/imagemmenu3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:src="@drawable/icone_adicionarestabelecimento"
+            app:layout_constraintTop_toBottomOf="@id/textViewmenu3"
+            app:layout_constraintBottom_toBottomOf="@id/buttonmeunu3"
+            app:layout_constraintStart_toStartOf="@id/buttonmeunu3"
+            app:layout_constraintEnd_toEndOf="@id/buttonmeunu3"
+            />
+
+        <TextView
+            android:id="@+id/textViewmenu4"
+            style="@style/textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Conheça mais sobre Nós"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="@id/buttonmeunu4"
+            app:layout_constraintStart_toStartOf="@id/buttonmeunu4"
+            app:layout_constraintEnd_toEndOf="@id/buttonmeunu4"
+            />
+
+        <ImageView
+            android:id="@+id/imagemmenu4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:src="@drawable/icon_aboutus"
+            app:layout_constraintTop_toBottomOf="@id/textViewmenu4"
+            app:layout_constraintBottom_toBottomOf="@id/buttonmeunu4"
+            app:layout_constraintStart_toStartOf="@id/buttonmeunu4"
+            app:layout_constraintEnd_toEndOf="@id/buttonmeunu4"
+            />
+
+        <TextView
+            android:id="@+id/suporteTextInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="12dp"
+            android:text="Entre em contato conosco por support@mercadofacil.com.br"
+            android:textAlignment="center"
+            android:textColor="@color/roxoClaro"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/buttonmeunu4" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
