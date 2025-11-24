@@ -479,4 +479,33 @@ public class BancoControle {
 
         return ultimasAtualizacoes;
     }
+
+    public String getNomeCompletoPorEmail(String email) {
+        Cursor cursor = null;
+        String nomeCompleto = null;
+
+        if (db == null || !db.isOpen()) {
+            db = banco.getReadableDatabase();
+        }
+
+        try {
+            String[] campos = new String[]{"nomeCompleto"};
+            String where = "email = ?";
+            String[] argumentos = new String[]{email};
+
+            cursor = db.query("Usuarios", campos, where, argumentos, null, null, null, "1");
+
+            if (cursor != null && cursor.moveToFirst()) {
+                nomeCompleto = cursor.getString(0);
+            }
+
+        } catch (Exception e) {
+            Log.e("BancoControle", "Erro ao buscar nome do usuário por email", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return nomeCompleto;
+    }
 }

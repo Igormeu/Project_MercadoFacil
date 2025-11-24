@@ -75,17 +75,18 @@ public class activity_menu extends AppCompatActivity {
     }
 
     private void exibirMensagemBoasVindas() {
-        String email = session.getEmailUsuario();
-        String nomeUsuario = "Usuário";
 
-        if (email != null && !email.isEmpty()) {
-            if (email.contains("@")) {
-                nomeUsuario = email.substring(0, email.indexOf("@"));
-            } else {
-                nomeUsuario = email;
-            }
+        String nomeCompleto = session.getNomeUsuario();
+
+        String nomeExibicao = "Usuário";
+
+        if (nomeCompleto != null && !nomeCompleto.isEmpty()) {
+            String[] partesNome = nomeCompleto.split(" ");
+            nomeExibicao = partesNome[0];
+
         }
-        tvBoasVindas.setText("👋 Bem-vindo(a), " + nomeUsuario + "!");
+
+        tvBoasVindas.setText("👋 Bem-vindo(a), " + nomeExibicao + "!");
     }
 
     private void exibirUltimasAtualizacoes() {

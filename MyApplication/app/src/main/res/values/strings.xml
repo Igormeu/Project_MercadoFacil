@@ -5,6 +5,10 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="content_description_logo">Caixa roxa, Logo do Mercado Fácil</string>
+        <string name="content_description_login_google">Botão para login com Google</string>
+        <string name="content_description_login_facebook">Botão para login com Facebook</string>
+        <string name="content_description_login_apple">Botão para login com Apple</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

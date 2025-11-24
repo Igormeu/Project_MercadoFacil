@@ -83,7 +83,14 @@ public class LoginActivity extends AppCompatActivity {
         boolean credenciaisValidas = bancoControle.verificaLogin(login, senha);
 
         if (credenciaisValidas) {
-            session.criarSessaoLogin(login);
+
+            String nomeCompleto = bancoControle.getNomeCompletoPorEmail(login);
+            if (nomeCompleto != null) {
+                session.criarSessaoLogin(login, nomeCompleto);
+            } else {
+
+                session.criarSessaoLogin(login, "Usuário");
+            }
 
             Toast.makeText(this, "Login efetuado com sucesso!", Toast.LENGTH_SHORT).show();
 
