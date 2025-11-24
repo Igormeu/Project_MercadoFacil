@@ -20,13 +20,20 @@ public class LoginActivity extends AppCompatActivity {
     EditText edUsuerio, edSenha;
 
     private BancoControle bancoControle;
+    private SessaoManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        session = new SessaoManager(getApplicationContext());
+
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.scroll_view_login), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -38,12 +45,10 @@ public class LoginActivity extends AppCompatActivity {
         edSenha = findViewById(R.id.editTextTextPassword8);
         bancoControle = new BancoControle(this);
 
-        // 2. ADICIONAR O CLIQUE
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // 3. INICIAR A TELA DE LOGIN
+                // Ao ir para a tela de registro, finalize esta Activity
                 Intent intent = new Intent(LoginActivity.this, RegistrarActivity.class);
                 startActivity(intent);
                 finish();
@@ -51,44 +56,42 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         btnLogin.setOnClickListener(v -> realizarLogin());
+
     }
 
-    // 🆕 Gerenciamento do ciclo de vida do banco (Recomendado)
     @Override
     protected void onResume() {
         super.onResume();
-        // Abrir a conexão quando a Activity estiver ativa
         bancoControle.abrirBanco();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        // Fechar a conexão quando a Activity for pausada
         bancoControle.fecharBanco();
     }
-    // Fim do gerenciamento do ciclo de vida
 
     public void realizarLogin(){
         String login = edUsuerio.getText().toString().trim();
         String senha = edSenha.getText().toString();
 
-        // 1. Validação de campos vazios
         if (login.isEmpty() || senha.isEmpty()) {
             Toast.makeText(this, "Por favor, preencha Login e Senha.", Toast.LENGTH_LONG).show();
             return;
         }
 
-        // 2. Consulta ao banco de dados
         boolean credenciaisValidas = bancoControle.verificaLogin(login, senha);
 
-        // 3. Resultado e Navegação
         if (credenciaisValidas) {
+            session.criarSessaoLogin(login);
+
             Toast.makeText(this, "Login efetuado com sucesso!", Toast.LENGTH_SHORT).show();
 
             Intent intentLogin = new Intent(LoginActivity.this, activity_menu.class);
+
+            intentLogin.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intentLogin);
-            finish(); // Finaliza a tela de Login para que o usuário não volte com o botão 'Back'
+            finish();
         } else {
             Toast.makeText(this, "Credenciais inválidas. Tente novamente.", Toast.LENGTH_LONG).show();
             edSenha.setError("Login ou Senha incorretos");

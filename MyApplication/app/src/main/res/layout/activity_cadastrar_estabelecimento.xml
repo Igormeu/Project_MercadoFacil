@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/roxoClaro"
+    android:fillViewport="true"
+    tools:context=".CadastrarEstabelecimentoActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/imageViewLogo"
+            android:layout_width="150dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="Logo Mercado Fácil"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/logomercadofacil" />
+
+        <TextView
+            android:id="@+id/tv_titulo_estabelecimento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cadastro de Estabelecimento"
+            android:textColor="#7B1FA2"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/imageViewLogo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_nome_estab"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="15dp"
+            android:hint="Nome do Estabelecimento"
+            app:hintTextColor="#333333"
+            app:boxStrokeColor="#555555"
+            app:layout_constraintTop_toBottomOf="@id/tv_titulo_estabelecimento"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <EditText
+                android:id="@+id/et_nome_estab"
+                style="@style/textcolorview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Supermercado Assai"
+                android:inputType="textCapWords"
+                android:padding="16dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_rede"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="15dp"
+            android:hint="Rede (Opcional)"
+            app:hintTextColor="#333333"
+            app:boxStrokeColor="#555555"
+            app:layout_constraintTop_toBottomOf="@id/text_input_nome_estab"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <EditText
+                android:id="@+id/et_rede"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ex: Walmart, Carrefour"
+                android:inputType="textCapWords"
+                style="@style/textcolorview"
+                android:padding="16dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_rua"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="15dp"
+            android:hint="Rua / Logradouro"
+            app:hintTextColor="#333333"
+            app:boxStrokeColor="#555555"
+            app:layout_constraintTop_toBottomOf="@id/text_input_rede"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <EditText
+                android:id="@+id/et_rua"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ex: Av. Brasil, 123"
+                android:inputType="textCapWords"
+                style="@style/textcolorview"
+                android:padding="16dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_bairro"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="15dp"
+            android:hint="Bairro"
+            app:hintTextColor="#333333"
+            app:boxStrokeColor="#555555"
+            app:layout_constraintTop_toBottomOf="@id/text_input_rua"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <EditText
+                android:id="@+id/et_bairro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ex: Centro"
+                android:inputType="textCapWords"
+                style="@style/textcolorview"
+                android:padding="16dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_cidade"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="15dp"
+            android:hint="Cidade"
+            app:hintTextColor="#333333"
+            app:boxStrokeColor="#555555"
+            app:layout_constraintTop_toBottomOf="@id/text_input_bairro"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <EditText
+                android:id="@+id/et_cidade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ex: Fortaleza"
+                android:inputType="textCapWords"
+                style="@style/textcolorview"
+                android:padding="16dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_estado"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="15dp"
+            android:hint="Estado (UF)"
+            app:hintTextColor="#333333"
+            app:boxStrokeColor="#555555"
+            app:counterMaxLength="2"
+            app:layout_constraintTop_toBottomOf="@id/text_input_cidade"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <EditText
+                android:id="@+id/et_estado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ex: CE"
+                android:inputType="textCapCharacters"
+                android:maxLength="2"
+                style="@style/textcolorview"
+                android:padding="16dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_cep"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="15dp"
+            android:hint="CEP"
+            app:hintTextColor="#333333"
+            app:boxStrokeColor="#555555"
+            app:layout_constraintTop_toBottomOf="@id/text_input_estado"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <EditText
+                android:id="@+id/et_cep"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ex: 60000000"
+                android:inputType="number"
+                style="@style/textcolorview"
+                android:padding="16dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_cadastrar_estabelecimento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="#7B1FA2"
+            android:padding="15dp"
+            android:text="Cadastrar Estabelecimento"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_input_cep" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

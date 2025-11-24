@@ -7,9 +7,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class BancoControle {
 
-    private SQLiteDatabase db;
+    SQLiteDatabase db;
     private CriarBanco banco;
 
     public BancoControle(Context context){
@@ -18,7 +27,6 @@ public class BancoControle {
 
     // --- MÉTODOS DE CONTROLE DO BANCO ---
     public void abrirBanco() throws SQLiteException {
-        // Abre o banco de dados para escrita
         db = banco.getWritableDatabase();
     }
 
@@ -29,11 +37,6 @@ public class BancoControle {
     }
 
     // --- MÉTODOS DE INSERÇÃO ---
-
-    /**
-     * Insere um novo endereço.
-     * * ATENÇÃO: Este método agora assume que 'abrirBanco()' já foi chamado.
-     */
     public String insereEndereco(String nomeEstab, String rede, String rua,
                                  String cidade, String bairro, String estado, String cep) {
         ContentValues valores = new ContentValues();
@@ -53,7 +56,6 @@ public class BancoControle {
         } catch (Exception e) {
             Log.e("BancoControle", "Erro ao inserir endereço", e);
         }
-        // REMOVIDO: db.close(); (Isto estava causando o erro crítico)
 
         if (resultado == -1)
             return "❌ Erro ao inserir endereço";
@@ -61,11 +63,7 @@ public class BancoControle {
             return "✅ Endereço inserido com sucesso";
     }
 
-    /**
-     * Insere um novo produto.
-     * (Seguindo seu código, com a coluna 'categoria')
-     */
-    public String insereProduto(String nome, double quantidadePorUnidade, int unidadeMedida, String categoria) {
+    public String insereProduto(String nome, double quantidadePorUnidade, String unidadeMedida, String marca) {
         ContentValues valores = new ContentValues();
         long resultado = -1;
 
@@ -73,14 +71,13 @@ public class BancoControle {
             valores.put("nome", nome);
             valores.put("quantidadePorUnidade", quantidadePorUnidade);
             valores.put("unidadeMedida", unidadeMedida);
-            valores.put("categoria", categoria);
+            valores.put("marca", marca);
 
             resultado = db.insert("Produtos", null, valores);
 
         } catch (Exception e) {
             Log.e("BancoControle", "Erro ao inserir produto", e);
         }
-        // REMOVIDO: db.close();
 
         if (resultado == -1)
             return "❌ Erro ao inserir produto";
@@ -89,9 +86,6 @@ public class BancoControle {
     }
 
 
-    /**
-     * Insere uma nova lista de preços.
-     */
     public String insereListaPreco(int idEndereco, int idProduto, double precoVenda, String dataAtualizacao) {
         ContentValues valores = new ContentValues();
         long resultado = -1;
@@ -107,7 +101,6 @@ public class BancoControle {
         } catch (Exception e) {
             Log.e("BancoControle", "Erro ao inserir lista de preço", e);
         }
-        // REMOVIDO: db.close();
 
         if (resultado == -1)
             return "❌ Erro ao inserir lista de preço";
@@ -115,10 +108,6 @@ public class BancoControle {
             return "✅ Lista de preço inserida com sucesso";
     }
 
-    /**
-     * Insere um novo usuário.
-     * 🚨 ALERTA DE SEGURANÇA: Salvando senha em texto puro!
-     */
     public String insereUsuario(String email, String senha, String nomeCompleto) {
         ContentValues valores = new ContentValues();
         long resultado = -1;
@@ -133,7 +122,6 @@ public class BancoControle {
         } catch (Exception e) {
             Log.e("BancoControle", "Erro ao inserir usuário", e);
         }
-        // REMOVIDO: db.close();
 
         if (resultado == -1)
             return "❌ Erro ao inserir usuário";
@@ -143,62 +131,44 @@ public class BancoControle {
 
     // --- MÉTODO DE CONSULTA ---
 
-    /**
-     * Carrega dados de uma tabela.
-     * Assume que 'abrirBanco()' já foi chamado (ou o banco será aberto para leitura).
-     * O Cursor retornado DEVE ser fechado pela Activity.
-     */
     public Cursor carregaDados(String tabelaSelecionada) {
         Cursor cursor;
         String[] campos;
 
-        // Garante que o banco está aberto (para leitura)
         if (db == null || !db.isOpen()) {
             db = banco.getReadableDatabase();
         }
 
-        // Definir quais campos carregar (seguindo seu código mais recente)
         switch (tabelaSelecionada) {
             case "Enderecos":
                 campos = new String[] {"_id", "nomeEstab", "rede", "rua", "cidade", "bairro", "estado", "cep"};
                 break;
             case "Produtos":
-                // Corrigido para incluir 'categoria' e 'unidadeMedida'
-                campos = new String[] {"_id", "nome", "quantidadePorUnidade", "unidadeMedida", "categoria"};
+                campos = new String[] {"_id", "nome", "quantidadePorUnidade", "unidadeMedida", "marca"};
                 break;
             case "ListaPrecos":
                 campos = new String[] {"_id", "idEndereco", "idProduto", "precoVenda", "dataAtualizacao"};
                 break;
             case "Usuarios":
-                // Corrigido para incluir 'senha' (como no seu código)
                 campos = new String[] {"_id","nomeCompleto", "email", "senha"};
                 break;
             default:
                 throw new IllegalArgumentException("Tabela inválida: " + tabelaSelecionada);
         }
 
-        // Carregar dados da tabela selecionada
         cursor = db.query(tabelaSelecionada, campos, null, null, null, null, null);
 
         if (cursor != null) {
             cursor.moveToFirst();
         }
 
-        // NÃO FECHAMOS O BANCO AQUI!
-        // O Cursor precisa dele aberto.
-
         return cursor;
     }
 
-    /**
-     * Verifica se já existe um usuário cadastrado com o login fornecido (e-mail).
-     * Retorna true se o usuário for encontrado, false caso contrário.
-     */
     public boolean verificaUsuarioExiste(String login) {
         Cursor cursor = null;
         boolean existe = false;
 
-        // Garante que o banco está aberto (para leitura)
         if (db == null || !db.isOpen()) {
             db = banco.getReadableDatabase();
         }
@@ -208,24 +178,19 @@ public class BancoControle {
             String where = "email = ?";
             String[] argumentos = new String[]{login};
 
-            // Faz a consulta: SELECT login FROM Usuarios WHERE login = ?
             cursor = db.query("Usuarios", campos, where, argumentos, null, null, null, "1");
 
-            // Se o cursor tem pelo menos um resultado (count > 0), o usuário existe
             if (cursor != null && cursor.getCount() > 0) {
                 existe = true;
             }
 
         } catch (Exception e) {
             Log.e("BancoControle", "Erro ao verificar existência do usuário", e);
-            // Em caso de erro, por segurança, assumimos que não existe (ou você pode lançar a exceção)
             existe = false;
         } finally {
-            // É crucial fechar o cursor para liberar recursos
             if (cursor != null) {
                 cursor.close();
             }
-            // Nota: Não fechamos o DB aqui, pois ele é gerenciado pelo onResume/onPause da Activity.
         }
 
         return existe;
@@ -236,20 +201,17 @@ public class BancoControle {
         Cursor cursor = null;
         boolean loginValido = false;
 
-        // Garante que o banco está aberto (para leitura)
         if (db == null || !db.isOpen()) {
             db = banco.getReadableDatabase();
         }
 
         try {
-            String[] campos = new String[]{"_id"}; // Basta retornar o ID, se existir
-            String where = "email = ? AND senha = ?"; // Condição composta
+            String[] campos = new String[]{"_id"};
+            String where = "email = ? AND senha = ?";
             String[] argumentos = new String[]{login, senha};
 
-            // Faz a consulta: SELECT _id FROM Usuarios WHERE login = ? AND senha = ?
             cursor = db.query("Usuarios", campos, where, argumentos, null, null, null, "1");
 
-            // Se o cursor tem resultados (count > 0), o login e senha coincidem
             if (cursor != null && cursor.getCount() > 0) {
                 loginValido = true;
             }
@@ -263,5 +225,258 @@ public class BancoControle {
         }
 
         return loginValido;
+    }
+
+    public List<ListaPrecoItem> buscarTodosPrecos() {
+        List<ListaPrecoItem> listaPrecos = new ArrayList<>();
+        Cursor cursor = null;
+
+        if (db == null || !db.isOpen()) {
+            db = banco.getReadableDatabase();
+        }
+
+        String query = "SELECT " +
+                "P.nome AS nomeProduto, " +
+                "P.marca AS marcaProduto, " +
+                "P.quantidadePorUnidade AS quantidade, " +
+                "P.unidadeMedida AS unidade, " +
+                "E.nomeEstab AS nomeEstabelecimento, " +
+                "E.rua AS ruaEstabelecimento, " +
+                "E.cidade AS cidadeEstabelecimento, " +
+                "LP.dataAtualizacao, " +
+                "LP.precoVenda " +
+                "FROM ListaPrecos LP " +
+                "INNER JOIN Produtos P ON LP.idProduto = P._id " +
+                "INNER JOIN Enderecos E ON LP.idEndereco = E._id " +
+                "ORDER BY LP.dataAtualizacao DESC";
+
+        try {
+            cursor = db.rawQuery(query, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String nomeProduto = cursor.getString(cursor.getColumnIndexOrThrow("nomeProduto"));
+                    String marcaProduto = cursor.getString(cursor.getColumnIndexOrThrow("marcaProduto"));
+
+                    double quantidade = cursor.getDouble(cursor.getColumnIndexOrThrow("quantidade"));
+                    String unidade = cursor.getString(cursor.getColumnIndexOrThrow("unidade"));
+
+                    String nomeEstabelecimento = cursor.getString(cursor.getColumnIndexOrThrow("nomeEstabelecimento"));
+                    String ruaEstabelecimento = cursor.getString(cursor.getColumnIndexOrThrow("ruaEstabelecimento"));
+                    String cidade = cursor.getString(cursor.getColumnIndexOrThrow("cidadeEstabelecimento"));
+                    String dataAtualizacao = cursor.getString(cursor.getColumnIndexOrThrow("dataAtualizacao"));
+                    double precoVenda = cursor.getDouble(cursor.getColumnIndexOrThrow("precoVenda"));
+
+                    String localidade = nomeEstabelecimento + ", " + ruaEstabelecimento;
+
+                    ListaPrecoItem item = new ListaPrecoItem(
+                            nomeProduto,
+                            localidade,
+                            dataAtualizacao,
+                            precoVenda,
+                            cidade,
+                            marcaProduto,
+                            quantidade,
+                            unidade
+                    );
+                    listaPrecos.add(item);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("BancoControle", "Erro ao buscar todos os preços.", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return listaPrecos;
+    }
+
+    public Map<String, Integer> buscarEnderecosPorNome(String nomeEstab) {
+        Map<String, Integer> detalhesEnderecos = new HashMap<>();
+        Cursor cursor = null;
+
+        if (db == null || !db.isOpen()) {
+            db = banco.getReadableDatabase();
+        }
+
+        String[] campos = new String[]{"_id", "rua", "cidade"};
+        String where = "nomeEstab = ?";
+        String[] argumentos = new String[]{nomeEstab};
+
+        try {
+            cursor = db.query("Enderecos", campos, where, argumentos, null, null, "rua ASC");
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
+                    String rua = cursor.getString(cursor.getColumnIndexOrThrow("rua"));
+                    String cidade = cursor.getString(cursor.getColumnIndexOrThrow("cidade"));
+
+                    String detalhe = rua + ", " + cidade;
+
+                    detalhesEnderecos.put(detalhe, id);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("BancoControle", "Erro ao buscar endereços por nome: " + nomeEstab, e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return detalhesEnderecos;
+    }
+
+    public List<String> buscarCidadesUnicas() {
+        List<String> cidades = new ArrayList<>();
+        cidades.add("Todas as Cidades");
+
+        Cursor cursor = null;
+        String query = "SELECT DISTINCT cidade FROM Enderecos ORDER BY cidade ASC";
+
+        try {
+            if (db == null || !db.isOpen()) {
+                db = banco.getReadableDatabase();
+            }
+
+            cursor = db.rawQuery(query, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String cidade = cursor.getString(cursor.getColumnIndexOrThrow("cidade"));
+                    cidades.add(cidade);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("BancoControle", "Erro ao buscar cidades únicas.", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            fecharBanco();
+        }
+        return cidades;
+    }
+
+    public List<String> buscarMarcasUnicas() {
+        List<String> marcas = new ArrayList<>();
+        Cursor cursor = null;
+
+        String query = "SELECT DISTINCT marca FROM Produtos ORDER BY marca ASC";
+
+        try {
+            if (db == null || !db.isOpen()) {
+                db = banco.getReadableDatabase();
+            }
+
+            cursor = db.rawQuery(query, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String marca = cursor.getString(cursor.getColumnIndexOrThrow("marca"));
+                    marcas.add(marca);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("BancoControle", "Erro ao buscar marcas únicas.", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return marcas;
+    }
+
+    public String buscarMarcaPorNomeProduto(String nomeProduto) {
+        Cursor cursor = null;
+        String marca = null;
+
+        if (db == null || !db.isOpen()) {
+            db = banco.getReadableDatabase();
+        }
+
+        String[] campos = new String[]{"marca"};
+        String where = "nome = ?";
+        String[] argumentos = new String[]{nomeProduto};
+
+        try {
+            cursor = db.query("Produtos", campos, where, argumentos, null, null, null, "1");
+
+            if (cursor != null && cursor.moveToFirst()) {
+                marca = cursor.getString(0);
+            }
+        } catch (Exception e) {
+            Log.e("BancoControle", "Erro ao buscar marca por nome do produto: " + nomeProduto, e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return marca;
+    }
+
+    public List<String> buscarUltimasAtualizacoesPreco() {
+        List<String> ultimasAtualizacoes = new ArrayList<>();
+        Cursor cursor = null;
+
+        if (db == null || !db.isOpen()) {
+            db = banco.getReadableDatabase();
+        }
+
+        String query = "SELECT " +
+                "P.nome AS nomeProduto, " +
+                "E.nomeEstab AS nomeEstabelecimento, " +
+                "E.cidade AS cidadeEstabelecimento, " +
+                "LP.precoVenda, " +
+                "LP.dataAtualizacao " +
+                "FROM ListaPrecos LP " +
+                "INNER JOIN Produtos P ON LP.idProduto = P._id " +
+                "INNER JOIN Enderecos E ON LP.idEndereco = E._id " +
+                "ORDER BY LP.dataAtualizacao DESC " +
+                "LIMIT 2";
+
+        try {
+            cursor = db.rawQuery(query, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                SimpleDateFormat formatoSaida = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+
+                do {
+                    String nomeProduto = cursor.getString(cursor.getColumnIndexOrThrow("nomeProduto"));
+                    String nomeEstabelecimento = cursor.getString(cursor.getColumnIndexOrThrow("nomeEstabelecimento"));
+                    String cidadeEstabelecimento = cursor.getString(cursor.getColumnIndexOrThrow("cidadeEstabelecimento"));
+                    double precoVenda = cursor.getDouble(cursor.getColumnIndexOrThrow("precoVenda"));
+                    String dataAtualizacao = cursor.getString(cursor.getColumnIndexOrThrow("dataAtualizacao"));
+
+                    String dataHoraFormatada;
+
+                    try {
+                        Date data = formatoEntrada.parse(dataAtualizacao);
+                        dataHoraFormatada = formatoSaida.format(data);
+                    } catch (java.text.ParseException e) {
+                        Log.e("BancoControle", "Erro ao formatar data, usando string bruta.", e);
+                        dataHoraFormatada = dataAtualizacao;
+                    }
+
+                    String formatada = String.format(
+                            "R$ %.2f | %s em %s, %s (%s)",
+                            precoVenda, nomeProduto, nomeEstabelecimento, cidadeEstabelecimento, dataHoraFormatada
+                    );
+                    ultimasAtualizacoes.add(formatada);
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("BancoControle", "Erro ao buscar últimas atualizações.", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return ultimasAtualizacoes;
     }
 }

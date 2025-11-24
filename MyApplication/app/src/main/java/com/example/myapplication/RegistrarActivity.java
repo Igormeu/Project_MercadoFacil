@@ -49,7 +49,6 @@ public class RegistrarActivity extends AppCompatActivity {
         btnRegistrar.setOnClickListener(v -> registrarLogin());
     }
 
-    // 🆕 Gerenciamento do ciclo de vida do banco (Recomendado)
     @Override
     protected void onResume() {
         super.onResume();
@@ -86,7 +85,6 @@ public class RegistrarActivity extends AppCompatActivity {
             return;
         }
 
-        // 🆕 4. VALIDAÇÃO DE USUÁRIO EXISTENTE
         if (bancoControle.verificaUsuarioExiste(loginEmail)) {
             Toast.makeText(this, "❌ Erro: Este e-mail já está cadastrado!", Toast.LENGTH_LONG).show();
             edEmail.setError("E-mail já registrado");
@@ -98,54 +96,10 @@ public class RegistrarActivity extends AppCompatActivity {
         Toast.makeText(this, resultado, Toast.LENGTH_LONG).show();
 
         if (resultado.startsWith("✅")) {
-            // Se a inserção foi bem-sucedida, volta para a tela de login
             voltarLogin();
         }
 
 
     }
-
- /*   public void verTabelaUsuarios() {
-        Cursor cursor = bancoControle.carregaDados("Usuarios");
-
-        if (cursor.getCount() == 0) {
-            Toast.makeText(this, "Nenhum usuário cadastrado.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // 2. Iterar sobre o Cursor e exibir no Logcat
-        Log.d("DB_USUARIOS", "--- INÍCIO DA TABELA USUARIOS ---");
-
-        // Obter os índices das colunas (ATUALIZADO para nomeCompleto e email)
-        int idIndex = cursor.getColumnIndex("_id");
-        int nomeCompletoIndex = cursor.getColumnIndex("nomeCompleto"); // 🆕 Novo campo
-        int emailIndex = cursor.getColumnIndex("email");             // 🔁 Substitui 'login'
-        int senhaIndex = cursor.getColumnIndex("senha");
-
-        // Reiniciar para a primeira linha para garantir
-        cursor.moveToFirst();
-
-        do {
-            // Obter os valores para a linha atual
-            String id = (idIndex != -1) ? cursor.getString(idIndex) : "N/A";
-            String nomeCompleto = (nomeCompletoIndex != -1) ? cursor.getString(nomeCompletoIndex) : "N/A";
-            String email = (emailIndex != -1) ? cursor.getString(emailIndex) : "N/A";
-            String senha = (senhaIndex != -1) ? cursor.getString(senhaIndex) : "N/A";
-
-            // Imprimir no Logcat com os novos campos
-            Log.d("DB_USUARIOS",
-                    "ID: " + id +
-                            ", Nome Completo: " + nomeCompleto +
-                            ", Email: " + email +
-                            ", Senha: " + senha);
-
-        } while (cursor.moveToNext()); // Mover para a próxima linha
-
-        Log.d("DB_USUARIOS", "--- FIM DA TABELA USUARIOS ---");
-
-        // 3. Fechar o Cursor (MUITO IMPORTANTE!)
-        cursor.close();
-    }
-*/
 
 }

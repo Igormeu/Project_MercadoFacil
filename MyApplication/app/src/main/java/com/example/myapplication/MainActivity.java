@@ -1,11 +1,9 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
-// 👇 IMPORTS ESSENCIAIS
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
-// 👆 IMPORTS ESSENCIAIS
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,28 +13,39 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
+    private SessaoManager session;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        session = new SessaoManager(getApplicationContext());
+
+
+        if (session.estaLogado()) {
+
+            Intent i = new Intent(MainActivity.this, activity_menu.class);
+
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+            finish();
+            return;
+        }
+
         EdgeToEdge.enable(this);
-
         setContentView(R.layout.activity_main);
-
 
         Button btnComecar = findViewById(R.id.btn_vamos_comecar);
 
-        // 2. ADICIONAR O CLIQUE
         btnComecar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                // 3. INICIAR A TELA DE LOGIN
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
-
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -44,4 +53,5 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
     }
+
 }
